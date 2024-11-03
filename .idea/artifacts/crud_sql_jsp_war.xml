@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="crud_sql_jsp:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>false</exploded>
+        <module>crud_sql_jsp</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="archive" name="crud_sql_jsp-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="crud_sql_jsp:war exploded" />
+    </root>
+  </artifact>
+</component>
