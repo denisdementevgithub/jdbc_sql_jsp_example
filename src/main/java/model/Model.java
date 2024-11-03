@@ -26,8 +26,8 @@ public class Model {
              Statement statement = connection.createStatement()) {
             int result = statement.executeUpdate("INSERT INTO list (name, gender, birthdate) " +
                     "VALUES ('" + person.getName() + "', '" +person.getGender() + "', '"+ format.format(person.getBirthDate()) +"');");
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
         }
     }
 
