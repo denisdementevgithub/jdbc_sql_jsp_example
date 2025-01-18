@@ -14,11 +14,11 @@
 <body class="w3-light-grey">
 <div class="w3-container w3-blue-grey w3-opacity w3-right-align">
     <h1>
-        Person app!
+        Person app
     </h1>
 </div>
 
-<div class="w3-container w3-padding">
+<div class="w3-container w3-padding w3-section">
     <%
         if (request.getAttribute("id") != null) {
             out.println("<div class=\"w3-panel w3-green w3-display-container w3-card-4 w3-round>\"\n>"
@@ -54,8 +54,8 @@
 </div>
 </div>
 </div>
-<div class="w3-container w3-grey w3-opacity w3-right-align w3-padding">
-    <button class="w3-btn w3-round-large" onclick="location.href='/'"> Вернуться на главную</button>
+<div class="w3-blue-grey w3-opacity w3-padding">
+    <a class="w3-button w3-light-grey w3-round" href="/"> Вернуться на главную </a>
 </div>
 
 </div>

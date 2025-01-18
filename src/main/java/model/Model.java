@@ -1,11 +1,8 @@
 package model;
 import entity.Gender;
 import entity.Person;
-import logic.Utils;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -18,22 +15,31 @@ public class Model {
     public static Model getInstance() {
         return instance;
     }
+    public Connection connection;
+    {
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/crud_db",
+                    "postgres", "admin");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
     public Model() {
         this.model = new HashMap<>();
     }
     public void add(Person person) {
-        try (Connection connection = Utils.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             int result = statement.executeUpdate("INSERT INTO list (name, gender, birthdate) " +
                     "VALUES ('" + person.getName() + "', '" +person.getGender() + "', '"+ format.format(person.getBirthDate()) +"');");
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public void updateID(String id, String name, String gender, String birthdate ) {
-        try (Connection connection = Utils.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             if (name != null || birthdate != null || gender != null) {
                 StringBuilder SQLrequstPart = new StringBuilder("UPDATE list SET");
                 if (name != null) {
@@ -54,23 +60,21 @@ public class Model {
                 String SQLrequest = (SQLrequstPart.append(" WHERE id = " + id + ";")).toString();
                 int result = statement.executeUpdate(SQLrequest);
             }
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     public void deleteID(String id) {
-        try (Connection connection = Utils.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             int result = statement.executeUpdate("DELETE FROM list WHERE id = '" + id + "';");
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
         public Map<Integer, Person> returnActualList() {
         model.clear();
-        try (Connection connection = Utils.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM list");
             while (resultSet.next()) {
                 Person person = null;
@@ -79,12 +83,12 @@ public class Model {
                 } else if (resultSet.getString(3).equalsIgnoreCase("female")) {
                     person = Person.createFemale(resultSet.getString(2), format.parse(resultSet.getString(4)));
                 }
+                System.out.println(person.toString());
                 model.put(Integer.parseInt(resultSet.getString(1)), person);
             }
-        } catch (SQLException | ParseException | ClassNotFoundException e) {
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
         return model;
     }
-
 }

@@ -1,8 +1,7 @@
-import entity.Gender;
 import entity.Person;
 import model.Model;
 import org.junit.*;
-import logic.Utils;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -11,7 +10,8 @@ public class TestClass {
     private static Connection connection;
     @BeforeClass
     public static void getConnection() throws SQLException, ClassNotFoundException {
-        connection = Utils.getConnection();
+        Model model = new Model();
+        connection = model.connection;
     }
     @Before
     public void testConnection() throws SQLException {
